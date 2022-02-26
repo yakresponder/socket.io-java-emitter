@@ -8,10 +8,14 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
+    // mavenLocal()
     maven {
-        url = uri('https://repo.maven.apache.org/maven2/')
-    }
+        url 'https://yakio-825300302123.d.codeartifact.us-east-2.amazonaws.com/maven/repo.yakrcl.io/'
+        credentials {
+            username "aws"
+            password System.env.CODEARTIFACT_AUTH_TOKEN
+        }
+    }    
 }
 
 dependencies {
@@ -31,11 +35,23 @@ description = 'socket.io-java-emitter'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
+  publications {
+      mavenJava(MavenPublication) {
+          groupId = group
+          artifactId = artifactId
+          version = version
+          from components.java
+      }
+  }
+  repositories {
+      maven {
+          url 'https://yakio-825300302123.d.codeartifact.us-east-2.amazonaws.com/maven/repo.yakrcl.io/'
+          credentials {
+              username "aws"
+              password System.env.CODEARTIFACT_AUTH_TOKEN
+          }
+      }
+  }
 }
 
 tasks.withType(JavaCompile) {
